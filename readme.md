@@ -1,8 +1,6 @@
 #2048-ai
 
-**Now your computer can lose for you!**
-
-===
+**Now your computer can lose for you**!
 
 ##Algorithm
 

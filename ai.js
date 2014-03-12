@@ -1,4 +1,52 @@
-var kbd = require('effroi').keyboard;
+// Adapted from http://stackoverflow.com/a/10520017
+var keydown = function(k) {
+    var oEvent = document.createEvent('KeyboardEvent');
+
+    // Gah, screw chrome
+    Object.defineProperty(oEvent, 'keyCode', {
+                get : function() {
+                    return this.keyCodeVal;
+                }
+    });     
+    Object.defineProperty(oEvent, 'which', {
+                get : function() {
+                    return this.keyCodeVal;
+                }
+    });     
+	Object.defineProperty(oEvent, 'metaKey', {
+                get : function() {
+                    return false;
+                }
+    });     
+	Object.defineProperty(oEvent, 'shiftKey', {
+                get : function() {
+                    return false;
+                }
+    });     
+
+    if (oEvent.initKeyboardEvent) {
+        oEvent.initKeyboardEvent("keydown", true, true, document.defaultView, false, false, false, false, k, k);
+    } else {
+        oEvent.initKeyEvent("keydown", true, true, document.defaultView, false, false, false, false, k, 0);
+    }
+
+    oEvent.keyCodeVal = k;
+	oEvent.metaKey = false;
+
+    if (oEvent.keyCode !== k) {
+        alert("keyCode mismatch " + oEvent.keyCode + "(" + oEvent.which + ")");
+    }
+
+    document.dispatchEvent(oEvent);
+};
+
+function triggerKey(key) {
+	keydown(key === ' ' ? 32 :
+		key === 'Left' ? 37 :
+		key === 'Up' ? 38 :
+		key === 'Right' ? 39 :
+		key === 'Down' ? 40 : 0);
+}
 
 function getTiles() {
 	var tileElements = Array.prototype.slice.call(document.getElementsByClassName('tile'));
@@ -55,8 +103,8 @@ function gameWon() {
 (function tick() {
 	if (gameWon()) return;
 	var oldNumOfTiles = document.getElementsByClassName('tile').length;
-	kbd.hit(gameOver() ? " " : move(getTiles()));
+	triggerKey(gameOver() ? " " : move(getTiles()));
 	if (oldNumOfTiles === document.getElementsByClassName('tile').length)
-		kbd.hit(randomMove()); // Prevents getting stuck
+		triggerKey(randomMove()); // Prevents getting stuck
 	setTimeout(tick, 50);
 })();
