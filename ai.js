@@ -41,11 +41,34 @@ var keydown = function(k) {
 };
 
 function triggerKey(key) {
-	keydown(key === ' ' ? 32 :
+	var code = key === ' ' ? 32 :
 		key === 'Left' ? 37 :
 		key === 'Up' ? 38 :
 		key === 'Right' ? 39 :
-		key === 'Down' ? 40 : 0);
+		key === 'Down' ? 40 : 0;
+
+	var e = document.createEvent('KeyboardEvent');
+
+    // Gah, screw chrome
+	Object.defineProperty(e, 'keyCode', {
+		get : function() { return code; }
+	});
+	Object.defineProperty(e, 'which', {
+		get : function() { return code; }
+	});
+	Object.defineProperty(e, 'metaKey', {
+		get : function() { return false; }
+	});
+	Object.defineProperty(e, 'shiftKey', {
+		get : function() { return false; }
+	});
+
+	if (e.initKeyboardEvent)
+        e.initKeyboardEvent("keydown", true, true, document.defaultView, false, false, false, false, code, code);
+	else
+		e.initKeyEvent("keydown", true, true, document.defaultView, false, false, false, false, code, 0);
+
+	document.dispatchEvent(e);
 }
 
 function getTiles() {
