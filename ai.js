@@ -26,7 +26,7 @@ function triggerKey(key) {
 	else
 		e.initKeyEvent("keydown", true, true, document.defaultView, false, false, false, false, code, 0);
 
-	document.dispatchEvent(e);
+	document.body.dispatchEvent(e);
 }
 
 function getTiles() {
