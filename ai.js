@@ -83,9 +83,16 @@ function gameWon() {
 
 (function tick() {
 	if (gameWon()) return;
+	
 	var oldNumOfTiles = document.getElementsByClassName('tile').length;
-	triggerKey(gameOver() ? " " : move(getTiles()));
+
+	if (gameOver())
+		document.getElementsByClassName('retry-button')[0].click();
+	else
+		triggerKey(move(getTiles()));
+
 	if (oldNumOfTiles === document.getElementsByClassName('tile').length)
 		triggerKey(randomMove()); // Prevents getting stuck
+
 	setTimeout(tick, 50);
 })();
