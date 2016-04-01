@@ -10,7 +10,7 @@
 - Paste in the following and press enter:
 
 ```
-var s = document.createElement('script'); s.src='https://raw.githubusercontent.com/j201/2048-ai/master/ai.js'; document.body.appendChild(s);
+var s = document.createElement('script'); s.src='https://rawgit.com/j201/2048-ai/master/ai.js'; document.body.appendChild(s);
 ```
 
 - Sit back and enjoy!
